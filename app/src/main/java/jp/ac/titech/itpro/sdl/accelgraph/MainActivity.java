@@ -21,7 +21,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     private final static String TAG = "MainActivity";
 
-    private TextView rateView, accuracyView;
+    private TextView nameView, rateView, accuracyView;
     private GraphView xView, yView, zView;
 
     private SensorManager sensorMgr;
@@ -45,6 +45,7 @@ public class MainActivity extends Activity implements SensorEventListener {
         Log.i(TAG, "onCreate");
         setContentView(R.layout.activity_main);
 
+        nameView = (TextView) findViewById(R.id.name_view);
         rateView = (TextView) findViewById(R.id.rate_view);
         accuracyView = (TextView) findViewById(R.id.accuracy_view);
         xView = (GraphView) findViewById(R.id.x_view);
@@ -126,6 +127,7 @@ public class MainActivity extends Activity implements SensorEventListener {
                         finish();
                         return;
                     }
+                    nameView.setText(accelerometer.getName());
                     sensorMgr.unregisterListener(this);
                     sensorMgr.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
                 }
