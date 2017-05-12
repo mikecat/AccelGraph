@@ -83,9 +83,10 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        vx = alpha * vx + (1 - alpha) * event.values[0];
-        vy = alpha * vy + (1 - alpha) * event.values[1];
-        vz = alpha * vz + (1 - alpha) * event.values[2];
+        float[] values = event.values;
+        vx = alpha * vx + (1 - alpha) * (values.length > 0 ? values[0] : 0);
+        vy = alpha * vy + (1 - alpha) * (values.length > 1 ? values[1] : 0);
+        vz = alpha * vz + (1 - alpha) * (values.length > 2 ? values[2] : 0);
         rate = ((float) (event.timestamp - prevts)) / (1000 * 1000);
         prevts = event.timestamp;
     }
