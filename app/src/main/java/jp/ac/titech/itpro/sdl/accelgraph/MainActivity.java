@@ -25,7 +25,7 @@ public class MainActivity extends Activity implements SensorEventListener {
     private GraphView xView, yView, zView;
 
     private SensorManager sensorMgr;
-    private Sensor accelerometer;
+    private Sensor sensor;
 
     private final static long GRAPH_REFRESH_WAIT_MS = 20;
 
@@ -53,9 +53,9 @@ public class MainActivity extends Activity implements SensorEventListener {
         zView = (GraphView) findViewById(R.id.z_view);
 
         sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
-        accelerometer = sensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        if (accelerometer == null) {
-            Toast.makeText(this, getString(R.string.toast_no_accel_error),
+        sensor = sensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        if (sensor == null) {
+            Toast.makeText(this, getString(R.string.toast_no_sensor_error),
                     Toast.LENGTH_SHORT).show();
             finish();
             return;
@@ -68,7 +68,7 @@ public class MainActivity extends Activity implements SensorEventListener {
     protected void onResume() {
         super.onResume();
         Log.i(TAG, "onResume");
-        sensorMgr.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+        sensorMgr.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST);
         th = new GraphRefreshThread();
         th.start();
     }
@@ -119,17 +119,17 @@ public class MainActivity extends Activity implements SensorEventListener {
         switch (reqCode) {
             case REQ_SENSOR:
                 if (resCode == Activity.RESULT_OK) {
-                    accelerometer = sensorMgr.getDefaultSensor(
+                    sensor = sensorMgr.getDefaultSensor(
                             data.getIntExtra(SensorSelectActivity.SENSOR_RES_NAME, Sensor.TYPE_ACCELEROMETER));
-                    if (accelerometer == null) {
-                        Toast.makeText(this, getString(R.string.toast_no_accel_error),
+                    if (sensor == null) {
+                        Toast.makeText(this, getString(R.string.toast_no_sensor_error),
                                 Toast.LENGTH_SHORT).show();
                         finish();
                         return;
                     }
-                    nameView.setText(accelerometer.getName());
+                    nameView.setText(sensor.getName());
                     sensorMgr.unregisterListener(this);
-                    sensorMgr.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+                    sensorMgr.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST);
                 }
                 break;
         }
