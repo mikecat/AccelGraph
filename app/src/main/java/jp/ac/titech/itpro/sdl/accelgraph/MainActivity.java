@@ -113,6 +113,26 @@ public class MainActivity extends Activity implements SensorEventListener {
         return true;
     }
 
+    @Override
+    public void onActivityResult(int reqCode, int resCode, Intent data) {
+        switch (reqCode) {
+            case REQ_SENSOR:
+                if (resCode == Activity.RESULT_OK) {
+                    accelerometer = sensorMgr.getDefaultSensor(
+                            data.getIntExtra(SensorSelectActivity.SENSOR_RES_NAME, Sensor.TYPE_ACCELEROMETER));
+                    if (accelerometer == null) {
+                        Toast.makeText(this, getString(R.string.toast_no_accel_error),
+                                Toast.LENGTH_SHORT).show();
+                        finish();
+                        return;
+                    }
+                    sensorMgr.unregisterListener(this);
+                    sensorMgr.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+                }
+                break;
+        }
+    }
+
     private class GraphRefreshThread extends Thread {
         public void run() {
             try {
