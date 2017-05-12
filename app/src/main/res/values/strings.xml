@@ -9,4 +9,5 @@
     <string name="x_label">X-axis</string>
     <string name="y_label">Y-axis</string>
     <string name="z_label">Z-axis</string>
+    <string name="select_sensor">Select sensor</string>
 </resources>

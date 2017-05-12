@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "jp.ac.titech.itpro.sdl.accelgraph"
-        minSdkVersion 17
+        minSdkVersion 20
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"

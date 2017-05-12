@@ -1,6 +1,7 @@
 package jp.ac.titech.itpro.sdl.accelgraph;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -8,12 +9,15 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Locale;
 
 public class MainActivity extends Activity implements SensorEventListener {
+    public final static int REQ_SENSOR = 1234;
 
     private final static String TAG = "MainActivity";
 
@@ -89,6 +93,24 @@ public class MainActivity extends Activity implements SensorEventListener {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         Log.i(TAG, "onAccuracyChanged: ");
         this.accuracy = accuracy;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.selectSensor:
+                startActivityForResult(new Intent(this, SensorSelectActivity.class), REQ_SENSOR);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
     private class GraphRefreshThread extends Thread {
